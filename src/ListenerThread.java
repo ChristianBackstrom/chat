@@ -21,10 +21,10 @@ public class ListenerThread implements Runnable{
         while (true) {
             try {
                 msg = in.readLine();
+                System.out.println(msg);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println(msg);
         }
     }
 
