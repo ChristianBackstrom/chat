@@ -25,10 +25,10 @@ public class Client {
         }
     }
 
-    public void listener(){
+    public void listener(controller controller){
         ListenerThread in = null;
         try {
-            in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+            in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())), controller);
             Thread listener = new Thread(in);
             listener.start();
         } catch (IOException e) {

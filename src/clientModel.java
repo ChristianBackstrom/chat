@@ -2,9 +2,10 @@ public class clientModel {
     private Client client;
 
 
-    public clientModel() {
+    public clientModel(controller controller) {
+        this.client = new Client();
         this.client.connect();
-        this.client.listener();
+        this.client.listener(controller);
     }
 
     public void sendMessage(String msg){

@@ -10,9 +10,11 @@ import java.io.IOException;
  */
 public class ListenerThread implements Runnable{
     private BufferedReader in;
+    private controller controller;
 
-    public ListenerThread(BufferedReader in) {
+    public ListenerThread(BufferedReader in, controller controller) {
         this.in = in;
+        this.controller = controller;
     }
 
     @Override
@@ -21,7 +23,7 @@ public class ListenerThread implements Runnable{
         while (true) {
             try {
                 msg = in.readLine();
-                System.out.println(msg);
+                controller.messageUpdate(msg);
             } catch (IOException e) {
                 e.printStackTrace();
             }

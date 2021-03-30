@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +18,7 @@ public class Server {
     private ServerSocket serverSocket;
     private Socket socket;
 
-    public void connect() {
+    public void connect(controller controller) {
         int port = 1234;
         boolean run = true;
         System.out.println("Server started.");
@@ -30,16 +31,18 @@ public class Server {
             System.out.println("Waiting for connections!");
             try {
                 socket = serverSocket.accept();
+                System.out.println("connected");
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            listener(controller);
         }
     }
 
-    public void listener(){
+    public void listener(controller controller){
             ListenerThread in = null;
             try {
-                in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+                in = new ListenerThread(new BufferedReader(new InputStreamReader(socket.getInputStream())), controller);
             } catch (IOException e) {
                 e.printStackTrace();
             }
