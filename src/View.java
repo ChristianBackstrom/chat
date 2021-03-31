@@ -4,30 +4,36 @@ import java.awt.event.ActionListener;
 public class View extends JFrame {
     private JPanel panel;
     private JList messages;
-    private JTextField sendMessage;
+    private JTextField ServerMessage;
     private JButton sendClient;
     private JButton sendServer;
+    private JTextField ClientMessage;
     private DefaultListModel list;
 
-    public String getSendMessage() {
-        return sendMessage.getText();
+    public String getServerMessage() {
+        return ServerMessage.getText();
     }
+
+    public String getClientMessage() { return ClientMessage.getText(); }
 
     public View(boolean client) {
         list = new DefaultListModel();
 
         panel = new JPanel();
         messages = new JList(list);
-        sendMessage = new JTextField(70);
-        panel.add(messages);
-        panel.add(sendMessage);
+
         if (client == true){
+            ClientMessage = new JTextField(80);
+            panel.add(ClientMessage);
             sendClient = new JButton("send");
             panel.add(sendClient);
         } else {
+            ServerMessage = new JTextField(80);
+            panel.add(ServerMessage);
             sendServer = new JButton("send");
-            panel.add(sendClient);
+            panel.add(sendServer);
         }
+        panel.add(messages);
         this.add(panel);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,10 +41,21 @@ public class View extends JFrame {
         this.setVisible(true);
     }
 
+    public void clearmsg(){
+        ServerMessage.setText(null);
+        ClientMessage.setText(null);
+    }
+
     public void chatUpdate(String msg){
         list.addElement(msg);
     }
 
-    void addSendClientListener(ActionListener listenForLoadListener) { this.sendClient.addActionListener(listenForLoadListener); }
-    void addSendServerListener(ActionListener listenForLoadListener) { this.sendServer.addActionListener(listenForLoadListener); }
+    void addSendClientListener(ActionListener listenForLoadListener) {
+        this.sendClient.addActionListener(listenForLoadListener);
+        this.ClientMessage.addActionListener(listenForLoadListener);
+    }
+    void addSendServerListener(ActionListener listenForLoadListener) {
+        this.sendServer.addActionListener(listenForLoadListener);
+        this.ServerMessage.addActionListener(listenForLoadListener);
+    }
 }

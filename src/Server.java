@@ -17,6 +17,8 @@ public class Server {
     private int port;
     private ServerSocket serverSocket;
     private Socket socket;
+    private PrintWriter out = null;
+
 
     public void connect(controller controller) {
         int port = 1234;
@@ -27,16 +29,14 @@ public class Server {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        while (true) {
-            System.out.println("Waiting for connections!");
-            try {
-                socket = serverSocket.accept();
-                System.out.println("connected");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            listener(controller);
+        System.out.println("Waiting for connections!");
+        try {
+            socket = serverSocket.accept();
+            System.out.println("connected");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+        listener(controller);
     }
 
     public void listener(controller controller){
@@ -51,20 +51,19 @@ public class Server {
     }
 
     public void chat(String msg){
-        PrintWriter out = null;
         try {
             out = new PrintWriter(socket.getOutputStream(), true);
+
+            out.println("SERVER: " + msg);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
-            while (run) {
-                out.println("SERVER: " + msg);
-            }
-            out.close();
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    }
+
+
+    public void close() throws IOException {
+        out.close();
+        socket.close();
     }
 }

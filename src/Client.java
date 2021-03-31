@@ -12,6 +12,7 @@ import java.util.Scanner;
  */
 public class Client {
     private Socket socket;
+    private PrintWriter out = null;
 
     public void connect(){
         String ip = (String) JOptionPane.showInputDialog(null,"IP?","Connect to..",JOptionPane.QUESTION_MESSAGE);
@@ -37,20 +38,18 @@ public class Client {
     }
 
     public void chat(String msg) {
-        PrintWriter out = null;
         try {
             out = new PrintWriter(socket.getOutputStream(),true);
-            boolean run = true;
-            while (run) {
-                out.println(msg);
-            }
 
-            out.close();
-            socket.close();
-            System.out.println("Done!");
+            out.println("client: " + msg);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
 
+    public void close() throws IOException {
+        out.close();
+        socket.close();
     }
 }

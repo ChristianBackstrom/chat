@@ -5,11 +5,12 @@ public class controller {
     private View view;
     private clientModel clientModel;
     private serverModel serverModel;
+    private String lastMSG;
 
     public void serverController() {
         this.view = new View(false);
         this.serverModel = new serverModel(this);
-        this.view.addSendServerListener(new sendClientMessage());
+        this.view.addSendServerListener(new sendServerMessage());
     }
 
     public void clientController() {
@@ -19,18 +20,25 @@ public class controller {
     }
 
     public void messageUpdate(String msg){
-        view.chatUpdate(msg);
+        System.out.println("updated");
+        if (msg != null && !msg.isEmpty())
+            if (!msg.equals(lastMSG))
+                view.chatUpdate(msg);
     }
 
     private class sendClientMessage implements ActionListener {
         public void actionPerformed(ActionEvent e){
-            clientModel.sendMessage(view.getSendMessage());
+            view.chatUpdate("client: " + view.getClientMessage());
+            clientModel.sendMessage(view.getClientMessage());
+            view.clearmsg();
         }
     }
 
     private class sendServerMessage implements ActionListener {
         public void actionPerformed(ActionEvent e){
-            serverModel.sendMessage(view.getSendMessage());
+            view.chatUpdate("server: " + view.getServerMessage());
+            serverModel.sendMessage(view.getServerMessage());
+            view.clearmsg();
         }
     }
 }
